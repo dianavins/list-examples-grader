@@ -39,12 +39,12 @@ tail -n 2 output.txt > output2.txt
 LASTLINE=$(head -n 1 output2.txt)
 echo "last line: " $LASTLINE
 
-FAILS=$($LASTLINE | cut -d ' ' -f 5)
-echo "num fails: " $FAILS
-NUMTESTS=$($LASTLINE | cut -d ' ' -f 2)
-echo "num tests: " $NUMTESTS
-GRADE=`100 - ( $FAILS / $NUMTESTS ) * 100`
-echo "Grade: " $GRADE 
+NUMTESTS=$(echo $LASTLINE | awk '{print $3}' | cut -d',' -f1)
+FAILS=$(echo $LASTLINE | awk '{print $5}' | cut -d',' -f1)
+echo "num fails: $FAILS"
+echo "num tests: $NUMTESTS"
+GRADE=$((100 - (FAILS * 100 / NUMTESTS)))
+echo "Grade: $GRADE"
 
 
 # Draw a picture/take notes on the directory structure that's set up after
